@@ -1,0 +1,356 @@
+<div class="wrapper">
+    <nav class="main-header navbar navbar-expand" style="background-color:#0D245E;">
+        <ul class="navbar-nav">
+            <li>
+                <div class="nav-link text-white" data-widget="pushmenu"><i class="fas fa-bars"></i></div>
+            </li>
+            <li class="nav-link text-white">
+                LISTA DE EXPOSITORES <i class="fas fa-clipboard-list text-white" style="font-size: 22px;"></i>
+
+            </li>
+        </ul>
+
+    </nav>
+
+    <!-------------------barra lateral ------------------------------>
+    <app-menu-fm></app-menu-fm>
+
+
+    <!------------------------------ inicio -------------------------------------------->
+    <div class="content-wrapper">
+        <div class="container">
+            <!------------------------------ AQUI EMPIEZAS A PONER LO QUE QUIERAS-------------------------------------------->
+            <div class="col-12 pt-1 ">
+                <!-- BUSCADOR -->
+                <div class="input-group ">
+                    <input type="search" class="form-control" (keyup)="buscador($event)" (clcik)="FiltroExpositores();" aria-label="Example  button addon">
+                    <div class="input-group-prepend">
+                        <font class="bg-navy pl-2 pr-2 pt-2 rounded"><i class="fas fa-search text-white "></i> </font>
+                    </div>
+                </div>
+                <!-- select -->
+                <div class="col-12 pt-2 pl-0">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="input-group">
+                                <div class="input-group-prepend ">
+                                    <div type="" class="bg-secondary pl-2 pr-2 pt-2 rounded">
+                                        <i class="fas fa-filter "></i>
+                                    </div>
+                                    <select class="custom-select" (change)="FiltroExpositores()" id="filtroListaExpositor">
+                                        <option value="1">Mis expositores</option>
+                                        <ng-container *ngFor="let item of listaFm">
+                                            <option value="2-{{item.usuario.id}}" *ngIf="activeUser!=item.usuario.id">
+                                                {{item.usuario.nombre}} {{item.usuario.aPaterno}}
+                                            </option>
+                                        </ng-container>
+                                        <option value="0">Todos</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-5 pt-2 text-navy text-lg text-center ">
+                            <b>
+                                <i class="fas fa-user-tie "></i>
+                                Expositores
+                                <i class="fa fa-spinner fa-spin" *ngIf="timerBuscador==1"></i>
+                            </b>
+                        </div>
+                        <div class="col-3 pt-2 text-right text-lg ">
+                            <i class="text-danger ">
+                                <b>
+                                    {{totalExpositores}}
+                                </b>
+                            </i>
+                            <i class="fas fa-users text-navy "></i>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <!-- TABLA -->
+                <div class=" table-responsive scroll ">
+                    <table class="table col-12 mt-2 table-striped text-center table-bordered table-sm wow ">
+                        <thead class="thead-dark ">
+                            <tr>
+                                <th scope="col "><i class="fas fa-store-alt "></i> Stand</th>
+                                <th scope="col "> <i class="fas fa-id-badge "></i> Expositor</th>
+                                <th> <i class="fas fa-eye "></i> Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody class=" ">
+                            <tr *ngFor="let item of listaStand ">
+                                <th class="pt-4 " scope="row ">{{item.numeroStand}}</th>
+                                <td class=" text-left ">{{item.expositor.nombre_comercial}}
+                                    <div class="progress mt-2 progressBarStand " style="height: 4px; ">
+                                        <div *ngIf="item.porcentajeArmado<=30 " class="progress-bar bg-danger " role="progressbar " style="width:{{item.porcentajeArmado}}% " aria-valuenow="25 " aria-valuemin="0 " aria-valuemax="100 "></div>
+                                        <div *ngIf="item.porcentajeArmado>30 && item.porcentajeArmado
+                                    <=70 " class="progress-bar bg-warning " role="progressbar " style="width:{{item.porcentajeArmado}}% " aria-valuenow="25 " aria-valuemin="0 " aria-valuemax="100 "></div>
+                                        <div *ngIf="item.porcentajeArmado>70 && item.porcentajeArmado
+                                        <=99 " class="progress-bar bg-success " role="progressbar " style="width:{{item.porcentajeArmado}}% " aria-valuenow="25 " aria-valuemin="0 " aria-valuemax="100 "></div>
+                                        <div *ngIf="item.porcentajeArmado==100 " class="progress-bar " style="background-color:#1285D5; " role="progressbar " style="width:{{item.porcentajeArmado}}% " aria-valuenow="25 " aria-valuemin="0
+                                            " aria-valuemax="100 "></div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="float-left col-6 " style="font-size:9px; ">progreso:
+                                            <b>{{item.porcentajeArmado}}%</b></div>
+                                        <div class="col-6 text-right " style="font-size:9px; " *ngFor="let user of item.asignacionEvento ">
+                                            <i class="fas fa-user-tie text-danger pl-5 " *ngIf="activeUser!=user.dUsuario.usuario.id ">{{user.dUsuario.usuario.nombre}}
+                                                {{user.dUsuario.usuario.aPaterno}}</i>
+                                            <i class="fas fa-user-tie text-success pl-1 " *ngIf="activeUser==user.dUsuario.usuario.id ">{{user.dUsuario.usuario.nombre}}
+                                                {{user.dUsuario.usuario.aPaterno}}</i>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- status de botones -->
+                                <td class="pt-3 ">
+                                    <button *ngIf="item.status==0 " class="btn btn-outline-dark btn-sm elevation-1 " id='Boton-{{item.id}}' value="Trazado" (click)="actualizarEstadoStand(item.id) ">
+                                        <i class="fas fa-drafting-compass "></i> Trazado
+                                    </button>
+
+                                    <button *ngIf="item.status==1 " class="btn btn-outline-warning btn-sm elevation-1 " id='Boton-{{item.id}}' value="Etiquetado" (click)="actualizarEstadoStand(item.id) ">
+                                        <i class='fas fa-tags'></i> Etiquetado
+                                    </button>
+
+                                    <button *ngIf="item.status==2 " class="btn btn-outline-primary btn-sm elevation-1 " id='Boton-{{item.id}}' value="Detalle" [routerLink]="['/detalleExpositor', item.id]">
+                                        <i class='fas fa-eye'></i> Detalle
+                                    </button>
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- /.col-12 -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.content -->
+</div>
+<!--  /wraper  -->
+
+
+<!--------------------------------MODAL INCIDENCIA GENERAL-------------------------------------------------------------------------------------------------------------------->
+<div class="modal fade " id="modal-xl2 ">
+    <div class="modal-dialog modal-xl modal-content ">
+        <div class="modal-body ">
+            <div class="card ">
+                <div class="card-header bg-gradient-danger ">
+                    <i class="fas fa-exclamation-circle "></i> Incidencia general
+                    <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+                        <span aria-hidden="true ">&times;</span>
+                    </button>
+                </div>
+                <!-- body-card -->
+                <div class="card-body scrol-barra ">
+                    <div class="form-inline text-danger ">
+                        <i class="fas fa-exclamation-triangle " style="font-size: 20px; "></i>
+                        <div class="ml-1 "> TIPO DE INCIDENTE</div>
+                    </div>
+                    <div class="row mt-4 ">
+
+                        <div class="text-center col-2 pb-3 ">
+                            Seguridad
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '1') " class="form-check-input " type="radio " name="categoriaRadios " value="option1 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-1 pb-3 ">
+                            Daño
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '2') " class="form-check-input " type="radio " name="categoriaRadios " value="option2 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Emergencias
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '3') " class="form-check-input " type="radio " name="categoriaRadios " value="option3 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Servicios
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '4') " class="form-check-input " type="radio " name="categoriaRadios " value="option4 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Armado
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '5') " class="form-check-input " type="radio " name="categoriaRadios " value="option5 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Apariencia
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '6') " class="form-check-input " type="radio " name="categoriaRadios " value="option6 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-1 pb-3 ">
+                            Otra
+                            <div class="form-check ">
+                                <input onclick="MostrarElemento( '7') " class="form-check-input " type="radio " name="categoriaRadios " value="option7 ">
+                            </div>
+                        </div>
+                    </div>
+                    <!----------esto es lo que esta oculto de seguridad-------------------------->
+                    <div class="col-12 p-3 " id="contenido " style="display: none ">
+                    </div>
+
+                    <hr>
+                    <!-- 1hr -->
+                    <div class="form-inline text-danger ">
+                        <i class="fas fa-user-friends " style="font-size: 20px; "></i>
+                        <div class="ml-1 ">QUIEN REPORTA</div>
+                    </div>
+                    <div class="row mt-4 mb-5 ">
+                        <div class="text-center col-3 ">
+                            Expositor
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option1 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-3 pb-3 ">
+                            Asistente
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option2 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Comité
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option3 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Proveedor
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option4 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Otra
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option5 ">
+                            </div>
+                        </div>
+
+                        <div class="col-6 p-2 pt-3 ">
+                            <input type="search " style="background-color: #e8e8e8 " class="form-control " id="exampleInputEmail1 " placeholder="Nombre ">
+                        </div>
+                        <div class="col-6 pt-3 ">
+                            <input type="number " style="background-color: #e8e8e8 " class="form-control " id="exampleInputEmail1 " placeholder="Teléfono ">
+                        </div>
+                        <div class="col-12 pt-1 ">
+                            <input type="search " style="background-color: #e8e8e8 " class="form-control " id="exampleInputEmail1 " placeholder="Empresa ">
+                        </div>
+                    </div>
+                    <hr>
+                    <!-- 2hr -->
+
+                    <div class="form-inline text-danger ">
+                        <i class="fas fa-user-check " style="font-size: 20px; "></i>
+                        <div class="ml-1 ">SEGUIMIENTO CON...</div>
+                    </div>
+                    <div class="row mt-4 mb-5 ">
+
+                        <div class="text-center col-2 ">
+                            Floor Manager
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option1 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Seguridad
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option2 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-4 pb-3 ">
+                            Seguridad Recinto
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option3 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Comite
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option4 ">
+                            </div>
+                        </div>
+                        <div class="text-center col-2 pb-3 ">
+                            Otra
+                            <div class="form-check ">
+                                <input class="form-check-input " type="radio " name="categoriaRadios " value="option5 ">
+                            </div>
+                        </div>
+                        <div class="col-12 pt-4 ">
+                            <input type="search " style="background-color: #e8e8e8 " class="form-control " id="exampleInputEmail1 " placeholder="Empresa ">
+                        </div>
+                        <div class="col-12 pt-2 ">
+                            <input type="search " style="background-color: #e8e8e8 " class="form-control " id="exampleInputEmail1 " placeholder="Nombre ">
+                        </div>
+                    </div>
+                    <!-- /row -->
+
+
+                    <hr>
+                    <!-- 3hr -->
+
+                    <div class="form-inline text-danger ">
+                        <i class="fas fa-keyboard " style="font-size: 20px; "></i>
+                        <div class="ml-1 ">DESCRIPCIÓN / RESUMEN DEL BIEN O INCIDENTE</div>
+                    </div>
+                    <textarea class="form-control mt-4 " style="background-color: #e8e8e8 " id="exampleFormControlTextarea1 " placeholder="Escribe aqui.... " rows="3 "></textarea>
+
+                    <hr>
+                    <!-- 4hr -->
+                    <div class="form-inline text-danger ">
+                        <i class="fas fa-toggle-on " style="font-size: 20px; "></i>
+                        <div class="ml-1 ">ESTATUS</div>
+                    </div>
+                    <div class="col-12 ">
+                        <div class="row mt-4 ">
+                            <div class="col-6 text-center ">
+                                <select onchange="cambiarcolor() " id="proceso " class="form-control form-control-sm bg-danger ">
+                                    <option class=" " selected=" " value="0 ">No iniciada</option>
+                                    <option class=" " value="1 ">Proceso</option>
+                                    <option class=" " value="2 ">Terminada</option>
+                                </select>
+                            </div>
+
+                            <div class="col-6 text-center ">
+                                <button type="button " class="btn btn-sm btn-secondary ">
+
+                                    <div id="div_file ">
+                                        <i class="fas fa-camera text-white text-lg "></i>
+                                        <input type="file " id="subir "> Subir foto
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /row -->
+                    </div>
+                    <!-- /col-12 -->
+                </div>
+                <!-- /.card-body -->
+
+
+                <!-- foter-card -->
+                <div class="card-footer text-right ">
+                    <button type="button " onclick="guardar() " class="btn btn-primary ">
+                        Guardar
+                    </button>
+                </div>
+                <!-- /boton-guardar -->
+            </div>
+            <!-- /card -->
+        </div>
+        <!-- /MODALBODY -->
+    </div>
+</div>
+<!-- /MODAL -->

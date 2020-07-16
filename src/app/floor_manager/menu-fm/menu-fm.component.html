@@ -1,0 +1,687 @@
+<section>
+    <div>
+        <nav class="main-header navbar navbar-expand" style="background-color:#0D245E;">
+            <ul class="navbar-nav">
+                <li>
+                    <div class="nav-link text-white" data-widget="pushmenu"><i class="fas fa-bars"></i></div>
+                </li>
+                <li class="nav-link text-white">
+                    LISTA DE EXPOSITORES <i class="fas fa-clipboard-list text-white" style="font-size: 22px;"></i>
+
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar bg-white elevation-4">
+            <a class="brand-link" style="background-color: #0D245E">
+                <img src="../../../assets/img_proyect/logoHeader.png" alt="Naib" class="brand-image">
+                <span class="brand-text text-white">Naib Group</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
+                        <li class="nav-item has-treeview menu-close">
+                            <a class="nav-link puntero"><img src="../../../assets/img_proyect/ric.png  "
+                                    style="width:40px;" class="img-circle elevation-2" alt="imgProfile">
+                                <p class="ml-4">
+                                    {{dataUser.nombre}} {{dataUser.aPaterno}}<i
+                                        class="right fas fa-angle-left mt-1"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item text-left">
+                                    <a class="nav-link">
+                                        <i class="fas fa-user-friends pr-1"></i>
+                                        <p>
+                                            <font style="vertical-align: inherit; opacity:.8;">Floor Manager</font>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item text-left">
+                                    <a class="nav-link">
+                                        <i class="fas fa-store-alt pr-1"></i>
+                                        <p>
+                                            <font style="vertical-align: inherit; opacity:.8;">Zona 1</font>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item text-left">
+                                    <a class="nav-link">
+                                        <i class="fas fa-phone pr-1"></i>
+                                        <p>
+                                            <font style="vertical-align: inherit; opacity:.8;">{{dataUser.telefono}}
+                                            </font>
+                                        </p>
+                                    </a>
+                                </li>
+                                <li class="nav-item text-left">
+                                    <a class="nav-link">
+                                        <i class="fas fa-envelope pr-1"></i>
+                                        <p>
+                                            <font style="vertical-align: inherit; opacity:.8;">{{dataUser.email}}</font>
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <hr class="mt-0">
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link small">
+                                <i class="nav-icon fas fa-map-marked-alt"></i>
+                                <p>
+                                    Mapa
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active small">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Lista de expositores
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link small">
+                                <i class="nav-icon fas fa-exclamation-circle"></i>
+                                <p>
+                                    Incidencias del evento
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active">
+                                <i class="nav-icon fas fa-question-circle"></i>
+                                <p>
+                                    Ayuda
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+                <hr />
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="modal" data-target="#modal-general">
+                            <i class="fas fa-plus-circle text-danger h3"></i>
+                            <p class="ml-2">
+                                Incidencia general
+                            </p>
+                        </a>
+                        <hr />
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link puntero" (click)="logout()">
+                            <i class="nav-icon fas fa-door-open"></i>
+                            <p>
+                                Cerrar sesión
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+    </div>
+
+
+    <div class="modal fade" id="modal-general" aria-modal="true">
+        <div class="modal-dialog modal-xl modal-content">
+            <div class="modal-body">
+
+                <div class="card">
+                    <div class="card-header bg-gradient-danger">
+                        <i class="fas fa-exclamation-circle"></i> Incidencia general
+                        <button type="button" id="1mod" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <form #inciGForm="ngForm" (ngSubmit)="create(); inciGForm.reset()" name="formularioGeneral">
+                        <!-- body-card -->
+                        <div class="card-body scrol-barra ">
+
+                            <div class="form-inline text-danger">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 20px;"></i>
+                                <div class="ml-1"> TIPO DE INCIDENTE</div>
+                            </div>
+                            <div class="row mt-4 ">
+                                <div class="text-center col-2 pb-3">
+                                    Seguridad
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('1')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Seguridad" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-1 pb-3">
+                                    Daño
+                                    <div class="form-check ">
+                                        <input (click)="mostrarIncidentes('2')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Daño" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Emergencias
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('3')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Emergencias"
+                                            [(ngModel)]="incidencia.categoria" required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Servicios
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('4')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Servicios" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Armado
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('5')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Armado" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Apariencia
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('6')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Apariencia" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="text-center col-1 pb-3">
+                                    Otra
+                                    <div class="form-check">
+                                        <input (click)="mostrarIncidentes('7')" class="form-check-input" type="radio"
+                                            name="categoriaRadios" value="Otra" [(ngModel)]="incidencia.categoria"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 p-3" id="contenido" style="display: block">
+
+                                <div id="1" style="display: none;">
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Robo o extravio"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Robo o
+                                            Extravio</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Fuga de gases"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Fuga de
+                                            gases</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Render" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Render</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="DRO" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">DRO</label>
+                                    </div>
+                                </div>
+
+                                <div id="2" style="display: none;">
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Daño al recinto"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Daño al
+                                            recinto</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Daño al stand"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Daño al
+                                            stand</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Daño a terceros"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Daño a
+                                            terceros</label>
+                                    </div>
+                                </div>
+
+                                <div id="3" style="display: none;">
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Sismo" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Sismo</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Ambulancia" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Ambulancia</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Conato de incendio"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Conato de
+                                            incendio</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Lesion/Enfermedad"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Lesion/Enfermedad</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" class="form-check-input"
+                                            name="subcategoria" value="Amenaza de bomba"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs" for="subcategoria">Amenaza
+                                            de bomba</label>
+                                    </div>
+                                </div>
+
+                                <div id="4" style="display: none;">
+                                    <div class='col-12'>
+                                        <div class='row'>
+                                            <div class='col-4'>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Alfombra" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Alfombra</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Mobiliario" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Mobiliario</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Luz/Electricidad" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Luz/Electricidad</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Colganteo" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Colganteo</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Montaje Instalación"
+                                                        [(ngModel)]="incidencia.subcategoria" required><label
+                                                        class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Montaje
+                                                        Instalación</label>
+                                                </div>
+                                            </div>
+                                            <div class='col-4'>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Renta de inmobiliario"
+                                                        [(ngModel)]="incidencia.subcategoria" required><label
+                                                        class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Renta de
+                                                        inmobiliario</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Limpieza" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Limpieza</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Servicio Médico" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Servicio Médico</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Estacionamiento" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Estacionamiento</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Renta de plantas" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Renta de plantas</label>
+                                                </div>
+                                            </div>
+                                            <div class='col-4'>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Agua y desague" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Agua y desague</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Aire" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Aire</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Internet" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Internet</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Alimentos y bebidas"
+                                                        [(ngModel)]="incidencia.subcategoria" required><label
+                                                        class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Alimentos y
+                                                        bebidas</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="5" style="display: none;">
+                                    <div class='col-12'>
+                                        <div class='row'>
+                                            <div class='col-6'>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Trazado" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Trazado</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Etiquetado" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Etiquetado</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="% Armado" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">% Armado</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Separación entre Stands"
+                                                        [(ngModel)]="incidencia.subcategoria" required><label
+                                                        class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Separación entre
+                                                        Stands</label>
+                                                </div>
+                                            </div>
+                                            <div class='col-6'>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Pago pendiente" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Pago pendiente</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="fuera de marca" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Fuera de marca</label>
+                                                </div>
+                                                <div class="form-check"><input type="radio" name="subcategoria"
+                                                        value="Mobiliario" [(ngModel)]="incidencia.subcategoria"
+                                                        required><label class="form-check-label text-secondary text-xs"
+                                                        for="subcategoria">Mobiliario</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="6" style="display: none;">
+                                    <div class="form-check"><input type="radio" name="subcategoria" value="Limpieza"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Limpieza</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" name="subcategoria" value="Alfombra"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Alfombra</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" name="subcategoria"
+                                            value="Detalles por terminar" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Detalles por terminar</label>
+                                    </div>
+                                    <div class="form-check"><input type="radio" name="subcategoria"
+                                            value="Esconder pared posterior" [(ngModel)]="incidencia.subcategoria"
+                                            required><label class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Esconder pared
+                                            posterior</label>
+                                    </div>
+                                </div>
+
+                                <div id="7" style="display: none;">
+                                    <div class="form-check"><input type="radio" name="subcategoria" value="Otra"
+                                            [(ngModel)]="incidencia.subcategoria" required><label
+                                            class="form-check-label text-secondary text-xs"
+                                            for="subcategoria">Otra</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <!-- 1hr -->
+                            <div class="form-inline text-danger">
+                                <i class="fas fa-user-friends" style="font-size: 20px;"></i>
+                                <div class="ml-1">QUIEN REPORTA</div>
+                            </div>
+                            <div class="row mt-4 mb-5">
+                                <div class="text-center col-3 ">
+                                    Expositor
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="reporta" value="Expositor"
+                                            [(ngModel)]="incidencia.reporta">
+                                    </div>
+                                </div>
+                                <div class="text-center col-3 pb-3">
+                                    Asistente
+                                    <div class="form-check ">
+                                        <input class="form-check-input" type="radio" name="reporta" value="Asistente"
+                                            [(ngModel)]="incidencia.reporta">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Comité
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="reporta" value="Comité"
+                                            [(ngModel)]="incidencia.reporta">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Proveedor
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="reporta" value="Proveedor"
+                                            [(ngModel)]="incidencia.reporta">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Otra
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="reporta" value="Otra"
+                                            [(ngModel)]="incidencia.reporta">
+                                    </div>
+                                </div>
+
+                                <div class="col-6 p-2 pt-3">
+                                    <input type="text" style="background-color: #e8e8e8" class="form-control"
+                                        placeholder="Nombre" name="nombreReporta" [(ngModel)]="incidencia.nombreReporta"
+                                        required #nombreReporta="ngModel" maxlength="20">
+                                    <div class="alert alert-danger"
+                                        *ngIf="nombreReporta.invalid && (nombreReporta.dirty || nombreReporta.touched)">
+                                        <div *ngIf="nombreReporta.errors.required">
+                                            El nombre es requerido.
+                                        </div>
+                                        <div *ngIf="nombreReporta.errors.maxlength">
+                                            Número de caracteres inválido.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 pt-3">
+                                    <input type="number" style="background-color: #e8e8e8" class="form-control"
+                                        placeholder="Teléfono" name="telefonoReporta"
+                                        [(ngModel)]="incidencia.telefonoReporta" #telefonoReporta="ngModel"
+                                        maxlength="15" minlength="9">
+                                    <div class="alert alert-danger"
+                                        *ngIf="telefonoReporta.invalid && (telefonoReporta.dirty || telefonoReporta.touched)">
+                                        <div *ngIf="telefonoReporta.errors.maxlength">
+                                            Número de caracteres inválido.
+                                        </div>
+                                        <div *ngIf="telefonoReporta.errors.minlength">
+                                            Número de caracteres inválido.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <!-- 2hr -->
+
+                            <div class="form-inline text-danger">
+                                <i class="fas fa-user-check" style="font-size: 20px;"></i>
+                                <div class="ml-1">SEGUIMIENTO CON...</div>
+                            </div>
+                            <div class="row mt-4 mb-5">
+                                <div class="text-center col-2 ">
+                                    Floor Manager
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="seguimiento"
+                                            value="FloorManager" [(ngModel)]="incidencia.seguimiento">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Seguridad
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="seguimiento"
+                                            value="Seguridad" [(ngModel)]="incidencia.seguimiento">
+                                    </div>
+                                </div>
+                                <div class="text-center col-4 pb-3">
+                                    Seguridad Recinto
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="seguimiento"
+                                            value="SeguridadRecinto" [(ngModel)]="incidencia.seguimiento">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Comite
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="seguimiento" value="Comite"
+                                            [(ngModel)]="incidencia.seguimiento">
+                                    </div>
+                                </div>
+                                <div class="text-center col-2 pb-3">
+                                    Otra
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="seguimiento" value="Otra"
+                                            [(ngModel)]="incidencia.seguimiento">
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4">
+                                    <input type="search" style="background-color: #e8e8e8" class="form-control"
+                                        placeholder="Empresa" name="empresaSeguimiento"
+                                        [(ngModel)]="incidencia.empresaSeguimiento" required
+                                        #empresaSeguimiento="ngModel">
+                                    <div class="alert alert-danger"
+                                        *ngIf="empresaSeguimiento.invalid && (empresaSeguimiento.dirty || empresaSeguimiento.touched)">
+                                        <div *ngIf="empresaSeguimiento.errors.required">
+                                            La empresa es requerida.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-2">
+                                    <input type="search" style="background-color: #e8e8e8" class="form-control"
+                                        placeholder="Nombre" name="nombreSeguimiento"
+                                        [(ngModel)]="incidencia.nombreSeguimiento" required
+                                        #nombreSeguimiento="ngModel">
+                                    <div class="alert alert-danger"
+                                        *ngIf="nombreSeguimiento.invalid && (nombreSeguimiento.dirty || nombreSeguimiento.touched)">
+                                        <div *ngIf="nombreSeguimiento.errors.required">
+                                            El nombre es requerido.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /row -->
+                            <hr />
+                            <!-- 3hr -->
+
+                            <div class="form-inline text-danger">
+                                <i class="fas fa-keyboard" style="font-size: 20px;"></i>
+                                <div class="ml-1">DESCRIPCIÓN / RESUMEN DEL BIEN O INCIDENTE</div>
+                            </div>
+                            <textarea class="form-control mt-4" style="background-color: #e8e8e8"
+                                placeholder="Escribe aquí..." rows="3" name="descripcion"
+                                [(ngModel)]="incidencia.descripcion" required #descripcion="ngModel"></textarea>
+                            <div class="alert alert-danger"
+                                *ngIf="descripcion.invalid && (descripcion.dirty || descripcion.touched)">
+                                <div *ngIf="descripcion.errors.required">
+                                    La descripción es requerida.
+                                </div>
+                            </div>
+
+                            <hr />
+                            <!-- 4hr -->
+                            <div class="form-inline text-danger">
+                                <i class="fas fa-toggle-on" style="font-size: 20px;"></i>
+                                <div class="ml-1">ESTATUS</div>
+                            </div>
+                            <div class="col-12">
+                                <div class="row  mt-4">
+                                    <div class="col-6 text-center">
+                                        <select class="form-control form-control-sm bg-danger" name="status"
+                                            [(ngModel)]="incidencia.status" id="selectStatus" (change)="cambiarColor()"
+                                            required #status="ngModel">
+                                            <option value="0" [ngValue]="undefined">Selecciona</option>
+                                            <option value="1">No iniciada</option>
+                                            <option value="2">Proceso</option>
+                                            <option value="3">Terminada</option>
+                                        </select>
+                                        <div class="alert alert-danger"
+                                            *ngIf="status.invalid && (status.dirty || status.touched)">
+                                            <div *ngIf="status.errors.required">
+                                                Seleccione un status.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <select class="form-control form-control-sm bg-info" name="salon"
+                                            [(ngModel)]="incidencia.salon" required #sala="ngModel">
+                                            <option value="0" [ngValue]="undefined">Seleccionar Sala</option>
+                                            <option value="1">Sala A</option>
+                                            <option value="2">Sala B</option>
+                                            <option value="3">Sala C</option>
+                                        </select>
+                                        <div class="alert alert-danger"
+                                            *ngIf="sala.invalid && (sala.dirty || sala.touched)">
+                                            <div *ngIf="sala.errors.required">
+                                                Seleccione una sala.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="button" class="btn btn-sm btn-success " [disabled]="!inciGForm.form.valid">
+                                <div id="div_file">
+                                    <i class="fas fa-camera  text-white text-lg "></i>
+                                    <input type="file"
+                                        style="opacity: 0; width: 100px; margin: 0px; padding: 0px; position: absolute;"
+                                        required accept="image/*" (change)="seleccionarFoto($event)">SubirFoto<br>
+                                </div>
+                            </button>
+                            <!--
+                <button class="btn btn-primary" role="button" [disabled]="!inciGForm.form.valid">
+                  Guardar
+                </button>-->
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <ngx-spinner bdColor="rgba(0,0,0,0.7)" size="medium" color="#0d245e" type="ball-atom" [fullScreen]="true">
+        <p style="color: white"> Cerrando sesión... </p>
+    </ngx-spinner>
+</section>
